@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Organization;
 
+use Illuminate\Support\Str;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -37,6 +38,7 @@ class OrganizationController extends Controller
         $slug_new = Organization::generateSlug($request->name);
         $input = $request->only(['name', 'email', 'phone', 'location']);
         $input['slug'] = $slug_new;
+        $input['token'] = Str::random(40);
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -48,6 +50,7 @@ class OrganizationController extends Controller
             // default image
             $input['image'] = 'storage/no_image.png';
         }
+
 
         Organization::create($input);
         session()->flash('success', 'Organization has been created.');

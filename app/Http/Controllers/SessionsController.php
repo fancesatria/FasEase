@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -53,13 +54,12 @@ class SessionsController extends Controller
 
     public function tenantLinkLogin($token)
     {
-        $user = User::where('login_token', $token)->firstOrFail();
+        $organization = Organization::where('token', $token)->firstOrFail();
 
-        app()->instance('currentOrganization', $user->organization);
+        app()->instance('currentOrganization', $organization);
 
         return view('session.login-session-tenant', [
-            'organization' => $user->organization,
-            'user' => $user,
+            'organization' => $organization,
             'token' => $token,
         ]);
     }
@@ -74,45 +74,52 @@ class SessionsController extends Controller
             'token' => 'required',
         ]);
 
-        $user = User::where('login_token', $request->token)->firstOrFail();
+        $organization = Organization::where('token', $request->token)->first();
 
-        if (!Auth::attempt([
+        if (!$organization) {
+            return back()->withErrors(['email' => 'Organization token invalid.']);
+        }
+
+        if (Auth::attempt([
             'email' => $request->email,
             'password' => $request->password,
-            'organization_id' => $user->organization_id,
             'is_active' => 1
         ])) {
-            return back()->withErrors(['email' => 'Invalid credentials']);
+            
+            $user = Auth::user();
+
+            if ($user->organization_id !== $organization->id) {
+                
+                Auth::logout(); 
+                return back()->withErrors([
+                    'email' => 'You are not registered in ' . $organization->name . ' sector.'
+                ]);
+            }
+
+            $request->session()->regenerate();
+            
+            session([
+                'login_type' => 'tenant',
+                'organization_id' => $user->organization_id,
+                'login_token' => $request->token 
+            ]);
+
+            $user->login_at = now();
+            $user->save();
+            
+            if($user->role == 'admin'){
+                return redirect()->route('org.dashboard-admin');
+            } else {
+                return redirect()->route('org.dashboard-user');
+            }
         }
 
-        // ini ku comment krn sidebar butuh login_token, tp minusnya ga aman
-        // $user->update(['login_token' => null]);
-
-        $request->session()->regenerate();
-        session([
-            'login_type' => 'tenant',
-            'organization_id' => $user->organization_id,
-            'login_token' => $request->token
-        ]);
-
-        $user->login_at = now();
-        $user->save();
-        
-        if($user->role == 'admin'){
-            return redirect()->route('org.dashboard-admin');
-        } else {
-            return redirect()->route('org.dashboard-user');
-        }
+        return back()->withErrors(['email' => 'Invalid credentials or account is inactive']);
     }
 
-
-
-    
     public function destroy(Request $request)
     {
         $loginType = session('login_type');
-
-        // ambil login_token sebelum logout
         $loginToken = session('login_token');
 
         Auth::logout();
@@ -120,12 +127,10 @@ class SessionsController extends Controller
         $request->session()->regenerateToken();
 
         if ($loginType === 'tenant') {
-            // tenant logout
             return redirect('organization/login/' . $loginToken)
                 ->with('success', 'You have been logged out.');
         }
 
-        // superadmin logout (default)
         return redirect()
             ->route('login-superadmin-index')
             ->with('success', 'You have been logged out.');

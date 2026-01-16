@@ -14,7 +14,8 @@ class Organization extends Model
         'email',
         'phone',
         'location',
-        'image'
+        'image',
+        'token'
     ];
 
     public function users() {

@@ -26,7 +26,7 @@
               {{-- BODY --}}
               <div class="card-body">
                 <form method="POST"
-                      action="{{ route('organization.login.submit', $organization->slug) }}">
+                      action="{{ route('organization.login.submit') }}">
                   @csrf
 
                   {{-- hidden context --}}
@@ -39,9 +39,10 @@
                     <input type="email"
                            class="form-control"
                            name="email"
-                           placeholder="Email"
-                           value="{{ old('email', $user->email ?? '') }}"
-                           readonly>
+                           placeholder="Email">
+                    @error('email')
+                        <span class="text-danger text-xs mt-1 d-block">{{ $message }}</span>
+                    @enderror
                   </div>
 
                   {{-- Password --}}

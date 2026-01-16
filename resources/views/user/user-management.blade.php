@@ -66,12 +66,12 @@
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center align-items-center gap-2">
                                             <span class="text-xs text-secondary text-truncate" style="max-width:140px">
-                                                {{ route('organization.login.link', $data->login_token) }}
+                                                {{ route('organization.login.link', $data->organization->token) }}
                                             </span>
 
                                             <i class="fas fa-copy text-info cursor-pointer"
                                             title="Copy login URL"
-                                            onclick="copyToClipboard('{{ route('organization.login.link', $data->login_token) }}')">
+                                            onclick="copyToClipboard('{{ route('organization.login.link', $data->organization->token) }}')">
                                             </i>
                                         </div>
                                     </td>
