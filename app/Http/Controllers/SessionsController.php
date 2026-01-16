@@ -97,7 +97,12 @@ class SessionsController extends Controller
 
         $user->login_at = now();
         $user->save();
-        return redirect()->route('org.dashboard');
+        
+        if($user->role == 'admin'){
+            return redirect()->route('org.dashboard-admin');
+        } else {
+            return redirect()->route('org.dashboard-user');
+        }
     }
 
 
@@ -116,7 +121,7 @@ class SessionsController extends Controller
 
         if ($loginType === 'tenant') {
             // tenant logout
-            return redirect('/login/organization/' . $loginToken)
+            return redirect('organization/login/' . $loginToken)
                 ->with('success', 'You have been logged out.');
         }
 

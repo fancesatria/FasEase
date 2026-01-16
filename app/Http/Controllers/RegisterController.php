@@ -60,6 +60,6 @@ class RegisterController extends Controller
         $user->login_at = now();
         $user->save();
         session()->flash('success', 'Your account has been created.');
-        return redirect()->route('org.dashboard');
+        return redirect()->route('org.dashboard-admin');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Item;
 
+use Carbon\Carbon;
 use App\Models\Item;
 use App\Models\Category;
 use App\Models\Organization;
@@ -24,6 +25,30 @@ class ItemController extends Controller
     public function create(){
         $categories = Category::where('organization_id', app('currentOrganization')->id)->get();
         return view('item.item-add', compact('categories', ));
+    }
+
+    public function generateBookingSlot(Item $item){
+        $slots = [];
+        $start = Carbon::parse($item->opening_time);
+        $end = Carbon::parse($item->closing_time);
+        $duration = $item->max_book_duration;
+
+        while($start->addHours(0) < $end){
+            $slotStart = $start->copy();
+            $slotEnd = $start->copy()->addHours($duration);
+
+            if($slotEnd > $end){
+                break;
+            }
+
+            $slots[] = [
+                'start' => $slotStart->format('H:i'),
+                'end' => $slotEnd->format('H:i'),
+            ];
+
+            $start->addHours($duration);
+        }
+        return $slots;
     }
 
     public function store(Request $request){

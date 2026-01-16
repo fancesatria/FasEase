@@ -14,25 +14,46 @@
 
             {{-- Dashboard --}}
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('superadmin.dashboard', 'org.dashboard') ? 'active' : '' }}"
-                href="{{ app()->bound('currentOrganization')
-                            ? route('org.dashboard', app('currentOrganization')->slug)
-                            : route('superadmin.dashboard') }}">
-                    
-                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-gauge {{ request()->routeIs('superadmin.dashboard', 'org.dashboard') ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
+            @php
+                $user = auth()->user();
+            @endphp
 
+            @if($user->role === 'superadmin')
+                <a class="nav-link {{ request()->routeIs('superadmin.dashboard') ? 'active' : '' }}"
+                href="{{ route('superadmin.dashboard') }}">
+                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-gauge {{ request()->routeIs('superadmin.dashboard') ? 'text-white' : 'text-dark' }}"></i>
+                    </div>
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
-            </li>
+
+            @elseif($user->role === 'admin')
+                <a class="nav-link {{ request()->routeIs('org.dashboard-admin') ? 'active' : '' }}"
+                href="{{ route('org.dashboard-admin', app('currentOrganization')->slug ?? '') }}">
+                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-gauge {{ request()->routeIs('org.dashboard-admin') ? 'text-white' : 'text-dark' }}"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Dashboard</span>
+                </a>
+
+            @elseif($user->role === 'user')
+                <a class="nav-link {{ request()->routeIs('org.dashboard-user') ? 'active' : '' }}"
+                href="{{ route('org.dashboard-user', app('currentOrganization')->slug ?? '') }}">
+                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-gauge {{ request()->routeIs('org.dashboard-user') ? 'text-white' : 'text-dark' }}"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Dashboard</span>
+                </a>
+            @endif
+        </li>
+
 
             <li class="nav-item mt-2">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">User Information</h6>
             </li>
 
             {{-- User Profile --}}
-            @if(session('login_type') === 'tenant')
+            @if(auth()->user()->role == 'admin')
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('org.user-profile-index') ? 'active' : '' }}" 
                     href="{{ route('org.user-profile-index') }}">
@@ -42,7 +63,7 @@
                         <span class="nav-link-text ms-1">User Profile</span>
                     </a>
                 </li>
-            @elseif(session('login_type') === 'superadmin')
+            @elseif(auth()->user()->role == 'superadmin')
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('superadmin.user-profile-index') ? 'active' : '' }}" 
                     href="{{ route('superadmin.user-profile-index') }}">
@@ -52,27 +73,35 @@
                         <span class="nav-link-text ms-1">User Profile</span>
                     </a>
                 </li>
+            @elseif(auth()->user()->role == 'user')
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('org.user-user-profile-index') ? 'active' : '' }}" 
+                    href="{{ route('org.user-user-profile-index') }}">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-user {{ request()->routeIs('org.user-user-profile-index') ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">User Profile</span>
+                    </a>
+                </li>
             @endif
 
             {{-- Copy Login Link --}}
-            @if(session('login_type') === 'tenant' && session('login_token'))
-            <li class="nav-item pb-2">
-                <a href="javascript:void(0)" class="nav-link" id="copy-login-link"
-                data-login-url="{{ url('/login/organization/' . session('login_token')) }}">
-                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-link text-dark"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Copy Login Link</span>
-                </a>
-            </li>
+            @if(session('login_type') === 'tenant' && session('login_token') && auth()->user()->role == 'admin')
+                <li class="nav-item pb-2">
+                    <a href="javascript:void(0)" class="nav-link" id="copy-login-link"
+                    data-login-url="{{ url('organization/login/' . session('login_token')) }}">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-link text-dark"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Copy Login Link</span>
+                    </a>
+                </li>
             @endif
 
-
-            <li class="nav-item mt-2">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Management</h6>
-            </li>
-
             @if (auth()->check() && auth()->user()->role === 'superadmin')
+                <li class="nav-item mt-2">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Management</h6>
+                </li>
                 {{-- User Management --}}
                 <li class="nav-item pb-2">
                     <a class="nav-link {{ Request::is('user-management') ? 'active' : '' }}" href="{{ url('user-management') }}">
@@ -95,6 +124,10 @@
             @endif
 
             @if (auth()->check() && auth()->user()->role === 'admin' && auth()->user()->organization)
+                <li class="nav-item mt-2">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Management</h6>
+                </li>
+
                 {{-- Category Management --}}
                 <li class="nav-item pb-2">
                     <a class="nav-link {{ Request::is('category-management*') ? 'active' : '' }}"
@@ -132,7 +165,7 @@
                     </a>
                 </li>
 
-                {{-- Billing --}}
+                {{-- Booking History --}}
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('org.booking-history') ? 'active' : '' }}" href="{{ route('org.booking-history') }}">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -142,7 +175,22 @@
                     </a>
                 </li>
             @endif
+            
+            @if (auth()->check() && auth()->user()->role === 'user' && auth()->user()->organization)
+                <li class="nav-item mt-2">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Booking Information</h6>
+                </li>
 
+                {{-- Booking History --}}
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('org.user-booking-history') ? 'active' : '' }}" href="{{ route('org.user-booking-history') }}">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-credit-card {{ Request::is('org.user-booking-history') ? 'text-white' : 'text-dark' }}"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Booking History</span>
+                    </a>
+                </li>
+            @endif
 
             {{-- Sign In --}}
             {{-- <li class="nav-item">

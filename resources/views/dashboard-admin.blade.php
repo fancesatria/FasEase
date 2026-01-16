@@ -152,7 +152,7 @@
   {{-- Chart --}}
   <div class="card z-index-2 my-4">
     <div class="card-header pb-0">
-      <h6>Sales Overview</h6> </div>
+      <h6>Bookings Overview</h6> </div>
     <div class="card-body p-3">
       <div class="chart">
         <canvas id="chart-bars" class="chart-canvas" height="300"></canvas>
@@ -175,13 +175,13 @@
         data: {
           labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
           datasets: [{
-            label: "Total Bookings", // Ganti label
+            label: "Total Bookings", 
             tension: 0.4,
             borderWidth: 0,
             borderRadius: 4,
             borderSkipped: false,
             backgroundColor: "#cb0c9f",
-            data: bookingData, // Masukkan data booking
+            data: bookingData, 
             maxBarThickness: 6
           }, ],
         },
@@ -207,7 +207,7 @@
               },
               ticks: {
                 suggestedMin: 0,
-                suggestedMax: Math.max(...userData) + 10, 
+                suggestedMax: Math.max(...bookingData) + 10, 
                 beginAtZero: true,
                 padding: 15,
                 font: {

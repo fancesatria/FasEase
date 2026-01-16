@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Booking\AdminBookingController;
+use App\Http\Controllers\Booking\UserBookingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegisterController;
@@ -88,10 +89,10 @@ Route::middleware(['auth', 'superadmin'])->group(function () {
 */
 Route::middleware('guest')->group(function () {
 
-    Route::get('/login/organization/{token}', [SessionsController::class, 'tenantLinkLogin'])
+    Route::get('organization/login/{token}', [SessionsController::class, 'tenantLinkLogin'])
         ->name('organization.login.link');
 
-    Route::post('/login/organization', [SessionsController::class, 'tenantLogin'])
+    Route::post('organization/login', [SessionsController::class, 'tenantLogin'])
         ->name('organization.login.submit');
 });
 
@@ -100,36 +101,50 @@ Route::middleware('guest')->group(function () {
 | TENANT AREA (ADMIN)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'tenant', 'admin'])->group(function () {
+Route::middleware(['auth', 'tenant'])->group(function () {
 
-    Route::get('/organization/dashboard', [HomeController::class, 'home_tenant'])
-        ->name('org.dashboard');
-    Route::get('/user-profile/fasease', [InfoUserController::class, 'create'])->name('org.user-profile-index');
-    Route::post('/user-profile/fasease', [InfoUserController::class, 'store'])->name('org.user-profile-store');
+    Route::get('/organization/user-profile', [InfoUserController::class, 'create'])->name('org.user-profile-index');
+    Route::post('organization/user-profile', [InfoUserController::class, 'store'])->name('org.user-profile-store');
 
-    // Category Management
-    Route::prefix('organization/category-management')->group(function () {
-        Route::get('/', [CategoryController::class, 'index'])->name('org.category-management-index');
-        Route::get('/create', [CategoryController::class, 'create'])->name('org.category-management-create');
-        Route::post('/create', [CategoryController::class, 'store'])->name('org.category-management-store');
-        Route::get('/{slug}/edit', [CategoryController::class, 'edit'])->name('org.category-management-edit');
-        Route::put('/{slug}/edit', [CategoryController::class, 'update'])->name('org.category-management-update');
-        Route::delete('/{slug}/delete', [CategoryController::class, 'destroy'])->name('org.category-management-destroy');
+    Route::middleware(['admin'])->group(function () {
+
+        Route::get('/organization/dashboard', [HomeController::class, 'home_tenant'])
+        ->name('org.dashboard-admin');
+
+        // Category Management
+        Route::prefix('organization/category-management')->group(function () {
+            Route::get('/', [CategoryController::class, 'index'])->name('org.category-management-index');
+            Route::get('/create', [CategoryController::class, 'create'])->name('org.category-management-create');
+            Route::post('/create', [CategoryController::class, 'store'])->name('org.category-management-store');
+            Route::get('/{slug}/edit', [CategoryController::class, 'edit'])->name('org.category-management-edit');
+            Route::put('/{slug}/edit', [CategoryController::class, 'update'])->name('org.category-management-update');
+            Route::delete('/{slug}/delete', [CategoryController::class, 'destroy'])->name('org.category-management-destroy');
+        });
+
+        // Item Management
+        Route::prefix('organization/item-management')->group(function () {
+            Route::get('/', [ItemController::class, 'index'])->name('org.item-management-index');
+            Route::get('/create', [ItemController::class, 'create'])->name('org.item-management-create');
+            Route::post('/create', [ItemController::class, 'store'])->name('org.item-management-store');
+            Route::get('/{slug}/edit', [ItemController::class, 'edit'])->name('org.item-management-edit');
+            Route::put('/{slug}/edit', [ItemController::class, 'update'])->name('org.item-management-update');
+            Route::delete('/{slug}/delete', [ItemController::class, 'destroy'])->name('org.item-management-destroy');
+        });
+
+        // Booking Management
+        Route::get('/organization/booking-management', [AdminBookingController::class, 'index'])->name('org.booking-management-index');
+        Route::get('/organization/booking-history', [AdminBookingController::class, 'show_booking_history'])->name('org.booking-history');
+        Route::post('/organization/booking/{id}/approve', [AdminBookingController::class, 'approve']);
+        Route::post('/organization/booking/{id}/reject', [AdminBookingController::class, 'reject']);
     });
 
-    // Item Management
-    Route::prefix('organization/item-management')->group(function () {
-        Route::get('/', [ItemController::class, 'index'])->name('org.item-management-index');
-        Route::get('/create', [ItemController::class, 'create'])->name('org.item-management-create');
-        Route::post('/create', [ItemController::class, 'store'])->name('org.item-management-store');
-        Route::get('/{slug}/edit', [ItemController::class, 'edit'])->name('org.item-management-edit');
-        Route::put('/{slug}/edit', [ItemController::class, 'update'])->name('org.item-management-update');
-        Route::delete('/{slug}/delete', [ItemController::class, 'destroy'])->name('org.item-management-destroy');
-    });
+    Route::middleware(['user'])->group(function () {
+        Route::get('/organization/user/dashboard', [HomeController::class, 'home_tenant_user'])
+        ->name('org.dashboard-user');
 
-    // Booking Management
-    Route::get('/organization/booking-management', [AdminBookingController::class, 'index'])->name('org.booking-management-index');
-    Route::get('/organization/booking-history', [AdminBookingController::class, 'show_booking_history'])->name('org.booking-history');
-    Route::post('/organization/booking/{id}/approve', [AdminBookingController::class, 'approve']);
-    Route::post('/organization/booking/{id}/reject', [AdminBookingController::class, 'reject']);
+        Route::get('/organization/user/user-profile', [InfoUserController::class, 'create'])->name('org.user-user-profile-index');
+        Route::post('organization/user/user-profile', [InfoUserController::class, 'store'])->name('org.user-user-profile-store');
+        Route::get('/organization/user/booking-history', [UserBookingController::class, 'show_booking_history'])->name('org.user-booking-history');
+    });
+    
 });

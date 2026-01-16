@@ -75,7 +75,7 @@ class HomeController extends Controller
             $bookingChart[] = $bookingsPerMonth[$i] ?? 0;
         }
 
-        $recentRequests = Booking::with(['user', 'item']) // Eager load relasi
+        $recentRequests = Booking::with(['user', 'item']) 
                             ->where('organization_id', $orgId)
                             ->where('status', 'pending')
                             ->latest()
@@ -91,5 +91,9 @@ class HomeController extends Controller
             'bookingChart' => $bookingChart,
             'recentRequests' => $recentRequests,
         ]);
+    }
+
+    public function home_tenant_user(){
+        return view('dashboard-user');
     }
 }
