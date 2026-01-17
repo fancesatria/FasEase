@@ -94,6 +94,35 @@ class HomeController extends Controller
     }
 
     public function home_tenant_user(){
-        return view('dashboard-user');
+        $user = auth()->user();
+
+        if (!$user || !$user->organization) {
+            abort(403, 'Organization not found.');
+        }
+
+        $orgId = $user->organization_id;
+        $totalBookings = Booking::where('organization_id', $orgId)
+            ->where('user_id', $user->id)
+            ->count();
+        $pendingBookings = Booking::where('organization_id', $orgId)
+            ->where('user_id', $user->id)
+            ->where('status', 'pending')->count();
+
+        $approvedBookings = Booking::where('organization_id', $orgId)
+            ->where('user_id', $user->id)
+            ->where('status', 'approved')->count();
+        
+        $rejectedBookings = Booking::where('organization_id', $orgId)
+            ->where('user_id', $user->id)
+            ->where('status', 'rejected')->count();
+        $categories = Category::where('organization_id', $orgId)->get();
+        
+        return view('dashboard-user', compact(
+            'categories',
+            'totalBookings',
+            'pendingBookings',
+            'approvedBookings',
+            'rejectedBookings'
+        ));
     }
 }

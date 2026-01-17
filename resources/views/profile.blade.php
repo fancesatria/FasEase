@@ -5,7 +5,7 @@
   <div class="main-content position-relative bg-gray-100 max-height-vh-100 h-100">
     <div class="container-fluid">
       <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('../assets/img/curved-images/curved0.jpg'); background-position-y: 50%;">
-        <span class="mask bg-gradient-primary opacity-6"></span>
+        <span class="mask bg-gradient-info opacity-6"></span>
       </div>
       <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
         <div class="row gx-4">
@@ -272,7 +272,7 @@
                         As Uber works through a huge amount of internal management turmoil.
                       </p>
                       <div class="d-flex align-items-center justify-content-between">
-                        <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
+                        <button type="button" class="btn btn-outline-info btn-sm mb-0">View Project</button>
                         <div class="avatar-group mt-2">
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
                             <img alt="Image placeholder" src="../assets/img/team-1.jpg">
@@ -309,7 +309,7 @@
                         Music is something that every person has his or her own specific opinion about.
                       </p>
                       <div class="d-flex align-items-center justify-content-between">
-                        <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
+                        <button type="button" class="btn btn-outline-info btn-sm mb-0">View Project</button>
                         <div class="avatar-group mt-2">
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
                             <img alt="Image placeholder" src="../assets/img/team-3.jpg">
@@ -346,7 +346,7 @@
                         Different people have different taste, and various types of music.
                       </p>
                       <div class="d-flex align-items-center justify-content-between">
-                        <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
+                        <button type="button" class="btn btn-outline-info btn-sm mb-0">View Project</button>
                         <div class="avatar-group mt-2">
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
                             <img alt="Image placeholder" src="../assets/img/team-4.jpg">

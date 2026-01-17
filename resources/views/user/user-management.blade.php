@@ -11,7 +11,7 @@
                         <div>
                             <h5 class="mb-0">All Users</h5>
                         </div>
-                        <a href="{{ route('user-management-create') }}" class="btn bg-gradient-primary btn-sm mb-0" type="button">+&nbsp; New User</a>
+                        <a href="{{ route('user-management-create') }}" class="btn bg-gradient-info btn-sm mb-0" type="button">+&nbsp; New User</a>
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">

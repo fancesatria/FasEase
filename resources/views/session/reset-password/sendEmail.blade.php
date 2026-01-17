@@ -8,7 +8,7 @@
             <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
                 <div class="card card-plain mt-8">
                     @if($errors->any())
-                        <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
+                        <div class="mt-3  alert alert-info alert-dismissible fade show" role="alert">
                             <span class="alert-text text-white">
                             {{$errors->first()}}</span>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">

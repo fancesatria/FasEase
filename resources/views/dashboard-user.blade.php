@@ -2,9 +2,99 @@
 
 @section('content')
 <div class="container-fluid py-4">
+
+    <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-body p-3">
+            <div class="row">
+                <div class="col-8">
+                <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Booking</p>
+                    <h5 class="font-weight-bolder mb-0">
+                    {{ $totalBookings }}
+                    </h5>
+                </div>
+                </div>
+                <div class="col-4 text-end">
+                <div class="icon icon-shape bg-gradient-info shadow text-center border-radius-md">
+                    <i class="fa fa-star text-lg opacity-10" aria-hidden="true"></i>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-body p-3">
+            <div class="row">
+                <div class="col-8">
+                <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Pending</p>
+                    <h5 class="font-weight-bolder mb-0">
+                    {{ $pendingBookings }}
+                    </h5>
+                </div>
+                </div>
+                <div class="col-4 text-end">
+                <div class="icon icon-shape bg-gradient-info shadow text-center border-radius-md">
+                    <i class="fa fa-stopwatch text-lg opacity-10" aria-hidden="true"></i>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="card">
+            <div class="card-body p-3">
+            <div class="row">
+                <div class="col-8">
+                <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Approved</p>
+                    <h5 class="font-weight-bolder mb-0">
+                    {{ $approvedBookings }}
+                    </h5>
+                </div>
+                </div>
+                <div class="col-4 text-end">
+                <div class="icon icon-shape bg-gradient-info shadow text-center border-radius-md">
+                    <i class="fa fa-box text-lg opacity-10" aria-hidden="true"></i>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6">
+        <div class="card">
+            <div class="card-body p-3">
+            <div class="row">
+                <div class="col-8">
+                <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Rejected</p>
+                    <h5 class="font-weight-bolder mb-0">
+                    {{ $rejectedBookings }}
+                    </h5>
+                </div>
+                </div>
+                <div class="col-4 text-end">
+                <div class="icon icon-shape bg-gradient-info shadow text-center border-radius-md">
+                    <i class="fa fa-ban text-lg opacity-10" aria-hidden="true"></i>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
     
     {{-- BANNER AREA --}}
-    <div class="row mb-5">
+    <div class="row mb-5 mt-5">
         <div class="col-12">
             <div id="mainCarousel" class="carousel slide rounded-xl overflow-hidden shadow-sm" data-bs-ride="carousel" data-bs-interval="3000">
                 <div class="carousel-inner">
@@ -65,60 +155,23 @@
     </div>
 
     <div class="row g-4">
+        @foreach($categories as $category)
         <div class="col-6 col-md-4 col-lg-2">
-            <a href="{{ url('/items?category=vegetables') }}" class="card category-card rounded-xl">
-                <div class="category-icon text-success">
-                    <i class="fas fa-carrot fa-lg"></i>
+            <a href="#" class="card category-card rounded-xl text-decoration-none text-dark">
+                
+                <div class="category-icon overflow-hidden p-0"> 
+                    
+                    <img src="{{ asset($category->image) }}" 
+                        alt="{{ $category->name }}" 
+                        class="w-100 h-100 rounded-circle"
+                        style="object-fit: cover;">
+                        
                 </div>
-                <span class="category-title">Vegetables</span>
+                
+                <span class="category-title mt-2">{{ $category->name }}</span>
             </a>
         </div>
-
-        <div class="col-6 col-md-4 col-lg-2">
-            <a href="{{ url('/items?category=fruits') }}" class="card category-card rounded-xl">
-                <div class="category-icon text-warning">
-                    <i class="fas fa-lemon fa-lg"></i>
-                </div>
-                <span class="category-title">Fruits</span>
-            </a>
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-2">
-            <a href="{{ url('/items?category=bakery') }}" class="card category-card rounded-xl">
-                <div class="category-icon text-primary">
-                    <i class="fas fa-bread-slice fa-lg"></i>
-                </div>
-                <span class="category-title">Breads</span>
-            </a>
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-2">
-            <a href="{{ url('/items?category=meat') }}" class="card category-card rounded-xl">
-                <div class="category-icon text-danger">
-                    <i class="fas fa-drumstick-bite fa-lg"></i>
-                </div>
-                <span class="category-title">Meat</span>
-            </a>
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-2">
-            <a href="{{ url('/items?category=drinks') }}" class="card category-card rounded-xl">
-                <div class="category-icon text-info">
-                    <i class="fas fa-wine-bottle fa-lg"></i>
-                </div>
-                <span class="category-title">Drinks</span>
-            </a>
-        </div>
-
-         <div class="col-6 col-md-4 col-lg-2">
-            <a href="{{ url('/items?category=seafood') }}" class="card category-card rounded-xl">
-                <div class="category-icon text-dark">
-                    <i class="fas fa-fish fa-lg"></i>
-                </div>
-                <span class="category-title">Seafood</span>
-            </a>
-        </div>
-
+        @endforeach
     </div>
 </div>
 

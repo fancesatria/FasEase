@@ -5,7 +5,7 @@
 <div>
     <div class="container-fluid">
         <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('../assets/img/curved-images/curved0.jpg'); background-position-y: 50%;">
-            <span class="mask bg-gradient-primary opacity-6"></span>
+            <span class="mask bg-gradient-info opacity-6"></span>
         </div>
         <div class="card card-body blur shadow-blur mx-4 mt-n6">
             <div class="row gx-4">
@@ -30,7 +30,7 @@
                 
                 {{-- Ini saya mau isi menjadi $organization->name atau isi menjadi nama perusahaan, teksnya berwarna --}}
                 <div class="col-auto my-auto ms-auto">
-                    <span class="badge bg-gradient-primary px-3 py-2 text-sm">
+                    <span class="badge bg-gradient-info px-3 py-2 text-sm">
                         {{ $user->organization->name ?? 'No Organization' }}
                     </span>
                 </div>
@@ -47,7 +47,7 @@
                 <form action="/user-profile" method="POST" role="form text-left">
                     @csrf
                     @if($errors->any())
-                        <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
+                        <div class="mt-3  alert alert-info alert-dismissible fade show" role="alert">
                             <span class="alert-text text-white">
                             {{$errors->first()}}</span>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">

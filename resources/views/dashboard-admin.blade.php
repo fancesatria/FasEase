@@ -16,7 +16,7 @@
               </div>
             </div>
             <div class="col-4 text-end">
-              <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+              <div class="icon icon-shape bg-gradient-info shadow text-center border-radius-md">
                 <i class="fa fa-stopwatch text-lg opacity-10" aria-hidden="true"></i>
               </div>
             </div>
@@ -39,7 +39,7 @@
               </div>
             </div>
             <div class="col-4 text-end">
-              <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+              <div class="icon icon-shape bg-gradient-info shadow text-center border-radius-md">
                 <i class="fa fa-star text-lg opacity-10" aria-hidden="true"></i>
               </div>
             </div>
@@ -61,7 +61,7 @@
               </div>
             </div>
             <div class="col-4 text-end">
-              <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+              <div class="icon icon-shape bg-gradient-info shadow text-center border-radius-md">
                 <i class="fa fa-box text-lg opacity-10" aria-hidden="true"></i>
               </div>
             </div>
@@ -83,7 +83,7 @@
               </div>
             </div>
             <div class="col-4 text-end">
-              <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+              <div class="icon icon-shape bg-gradient-info shadow text-center border-radius-md">
                 <i class="fa fa-landmark text-lg opacity-10" aria-hidden="true"></i>
               </div>
             </div>
@@ -180,7 +180,7 @@
             borderWidth: 0,
             borderRadius: 4,
             borderSkipped: false,
-            backgroundColor: "#cb0c9f",
+            backgroundColor: "#17c1e8",
             data: bookingData, 
             maxBarThickness: 6
           }, ],

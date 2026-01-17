@@ -11,7 +11,7 @@
                         <div>
                             <h5 class="mb-0">All items</h5>
                         </div>
-                        <a href="{{ route('org.item-management-create') }}" class="btn bg-gradient-primary btn-sm mb-0" type="button">+&nbsp; New Item</a>
+                        <a href="{{ route('org.item-management-create') }}" class="btn bg-gradient-info btn-sm mb-0" type="button">+&nbsp; New Item</a>
                     </div>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">

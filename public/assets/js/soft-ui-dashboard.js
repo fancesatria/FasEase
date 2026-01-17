@@ -296,7 +296,7 @@ function sidebarColor(a) {
 }
 
 //Set Sidebar Type
-function sidebarType(a) {
+function (a) {
   var parent = a.parentElement.children;
   var color = a.getAttribute("data-class");
 

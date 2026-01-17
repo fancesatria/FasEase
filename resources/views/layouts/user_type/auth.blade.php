@@ -42,7 +42,6 @@
         </main>
     @endif
 
-    @include('components.fixed-plugin')
     @stack('js')
 
 @endsection
