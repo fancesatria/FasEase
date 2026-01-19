@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\SendBookingReminders::class,
     ];
 
     /**
@@ -30,6 +30,7 @@ class Kernel extends ConsoleKernel
         if(env('IS_DEMO')) {
             $schedule->command('migrate:fresh --seed')->cron($scheduledInterval);
         }
+        $schedule->command('booking:send-reminders')->everyMinute();
     }
 
     /**

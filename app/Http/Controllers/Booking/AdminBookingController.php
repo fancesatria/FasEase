@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Booking;
 
 use App\Models\Booking;
+use App\Notifications\BookingStatusUpdatedNotification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -30,10 +31,15 @@ class AdminBookingController extends Controller
 
     public function approve($id)
     {
-        Booking::findOrFail($id)->update([
+        $booking = Booking::findOrFail($id);
+        $booking->update([
             'status' => 'approved',
             'reject_reason' => null
         ]);
+
+        if($booking->user) {
+            $booking->user->notify(new BookingStatusUpdatedNotification($booking));
+        }
 
         return back()->with('success', 'Booking approved');
     }
@@ -44,11 +50,15 @@ class AdminBookingController extends Controller
             'reject_reason' => 'required|string|max:255'
         ]);
 
-        Booking::findOrFail($id)->update([
+        $booking = Booking::findOrFail($id);
+        $booking->update([
             'status' => 'rejected',
             'reject_reason' => $request->reject_reason
         ]);
 
+        if($booking->user) {
+            $booking->user->notify(new BookingStatusUpdatedNotification($booking));
+        }
         return back()->with('success', 'Booking rejected');
     }
 

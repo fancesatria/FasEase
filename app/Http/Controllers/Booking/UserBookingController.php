@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Booking;
 
+use App\Models\User;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\BookingNotification;
+use Illuminate\Support\Facades\Notification;
 
 class UserBookingController extends Controller
 {
@@ -57,7 +60,7 @@ class UserBookingController extends Controller
 
         $user = Auth::user();
 
-        Booking::create([
+        $booking = Booking::create([
             'user_id' => $user->id,
             'organization_id' => $user->organization_id ?? null, // Asumsi ada relasi ini
             'item_id' => $request->item_id,
@@ -67,6 +70,11 @@ class UserBookingController extends Controller
             'status' => 'pending', // Default status
         ]);
 
+        $admins = User::where('organization_id', $booking->organization->id)
+            ->where('role', 'admin')
+            ->get();
+
+        Notification::send($admins, new BookingNotification($booking));
         return redirect()->back()->with('success', 'Booking created successfully! please wait for approval');
     }
 
