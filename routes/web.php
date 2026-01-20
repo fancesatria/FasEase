@@ -8,6 +8,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\Item\ItemController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\Item\UserItemController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\Category\CategoryController;
@@ -34,6 +35,11 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
     Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
     Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
+
+    // Google register
+    Route::get('fasease/auth/google', [GoogleAuthController::class, 'redirectToGoogleSuperadmin'])
+        ->name('superadmin.google.login');
+    Route::get('fasease/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallbackSuperadmin']);
 });
 
 /*
@@ -95,6 +101,10 @@ Route::middleware('guest')->group(function () {
     Route::get('organization/register/{token}', [RegisterController::class, 'create_organization'])->name('organization.register-index');
     Route::post('organization/register', [RegisterController::class, 'store_organization'])->name('organization.register-store');
 
+    Route::get('organization/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallbackTenant'])
+        ->name('organization.google.callback');
+    Route::get('organization/auth/google/{token}', [GoogleAuthController::class, 'redirectToGoogleTenant'])
+        ->name('organization.google.login');
 });
 
 /*

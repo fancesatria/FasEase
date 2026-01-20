@@ -27,7 +27,8 @@ class User extends Authenticatable
         'notes',
         'login_token',
         'is_active',
-        'login_at'
+        'login_at',
+        'google_id'
     ];
 
     /**

@@ -22,9 +22,8 @@
               <h5>Register with</h5>
             </div>
             <div class="row px-xl-5 px-sm-4 px-3">
-              
-              <div class="col-3 me-auto px-1">
-                <a class="btn btn-outline-light w-100" href="javascript:;">
+              <div class="col-12 mx-auto px-1">
+                <a class="btn btn-outline-light w-100" href="{{ route('organization.google.login', $organization->token) }}">
                   <svg width="24px" height="32px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                       <g id="google-icon" transform="translate(3.000000, 2.000000)" fill-rule="nonzero">
@@ -37,6 +36,7 @@
                   </svg>
                 </a>
               </div>
+
               <div class="mt-2 position-relative text-center">
                 <p class="text-sm font-weight-bold mb-2 text-secondary text-border d-inline z-index-2 bg-white px-3">
                   or
