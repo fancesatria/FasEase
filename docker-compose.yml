@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: fasease-app
+    container_name: fasease-app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      APP_ENV: production
+      APP_DEBUG: false
+      APP_URL: http://localhost
+
+#Konfigurasi DB
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: fasease
+      DB_USERNAME: root
+      DB_PASSWORD: secret
+    depends_on:
+      - db
+    networks:
+      - fasease-network
+  db:
+    image: mysql:8.0
+    container_name: fasease-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: fasease
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - fasease-network
+
+networks:
+  fasease-network:
+    driver: bridge
+
+volumes:
+  dbdata:
